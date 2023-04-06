@@ -23,7 +23,7 @@ public class Control extends gui{
 			    
 			    try {
 					FileWriter writer= new FileWriter("base.txt");
-					writer.write("Author " +  "Janitor " +  "Doctor " +  "Teacher " +  "Scientist " +  "Professor " +  "Hitman " +  "Mechanic " +  "Wizard ");
+					writer.write("Wizard" + "Author " +  "Janitor " +  "Doctor " +  "Teacher " +  "Scientist " +  "Professor " +  "Hitman " +  "Mechanic " +  "Wizard ");
 					System.out.println("The file is written");
 					writer.close();
 				} catch (IOException e) {
