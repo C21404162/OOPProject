@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.File;
 import java.util.List;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
