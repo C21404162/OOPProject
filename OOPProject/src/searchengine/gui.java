@@ -1,3 +1,10 @@
+// Author: Joe Mulholland
+// Student Number: C21404162
+// Date: 07/04/2023
+// Program Description: A search engine with a GUI. Has the option to search between 3 files that are created when ran, or any file on device.
+// Results are displayed with percent match that shows how close the searched term matches the terms in the txt file
+// Program also features clear button to clear results
+
 package searchengine;
 
 //Packages
@@ -53,37 +60,36 @@ public void searchFileForTerm(String filename, List<String> searchTerms, JTextAr
     //Read through file/s
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
         String line;
-        int totalMatches = 0;
-        int totalWords = 0;
-        
+        int totalScore = 0;
+        int totalCharacters = 0;
+
         //Read file loop
         while ((line = reader.readLine()) != null) {
-            int matches = 0;
-            int words = 0;
+            int score = 0;
+            int characters = line.length();
             for (String searchTerm : searchTerms) {
-                Pattern pattern = Pattern.compile(".*" + Pattern.quote(searchTerm.replaceAll("\\*", ".*")) + ".*", Pattern.CASE_INSENSITIVE);
-                Matcher matcher = pattern.matcher(line);
-                while (matcher.find()) {
-                    matches++;
+                for (int i = 0; i <= line.length() - searchTerm.length(); i++) {
+                    String substring = line.substring(i, i + searchTerm.length());
+                    if (substring.equalsIgnoreCase(searchTerm)) {
+                        score += searchTerm.length();
+                    }
                 }
             }
-            words = line.split("\\s+").length;
-            totalMatches += matches;
-            totalWords += words;
+            totalScore += score;
+            totalCharacters += characters;
         }
-        
+
         //Percent match calculation
-        double percent = (double) totalMatches / totalWords * 100.0;
-        
+        double percent = (double) totalScore / totalCharacters * 100.0;
+
         //Search results
-        if (totalMatches > 0) {
-            textarea.append(String.format("Terms: %s found in %s Percentage: (%.2f%%)\n", searchTerms, filename, percent ));
+        if (totalScore > 0) {
+            textarea.append(String.format("Terms: %s found in %s Percentage: (%.2f%%)\n", searchTerms, filename, percent));
         } else {
             textarea.append(String.format("Terms: %s not found in %s. Terms might be misspelled.\n", searchTerms, filename));
         }
     }
 }
-
 
 
 //Menu within GUI
