@@ -3,11 +3,8 @@ package searchengine;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Control extends gui{
-
-	      static ArrayList<Person> people =new ArrayList<Person>();
 
 		  public static void main(String[] args) {
 

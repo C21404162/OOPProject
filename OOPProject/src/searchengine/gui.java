@@ -50,41 +50,41 @@ public void gui()
 
 //Search algorithm
 public void searchFileForTerm(String filename, List<String> searchTerms, JTextArea textarea) throws IOException {
-	
-	//Read through file/s
+    //Read through file/s
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
         String line;
-        boolean termFound = false;
-        int matches= 0;
+        int totalMatches = 0;
+        int totalWords = 0;
         
         //Read file loop
         while ((line = reader.readLine()) != null) {
-        	
-        	//Matching search term to file term
-            for (String searchTerm : searchTerms) {	
-                Pattern pattern = Pattern.compile(".*" + Pattern.quote(searchTerm) + ".*", Pattern.CASE_INSENSITIVE);
+            int matches = 0;
+            int words = 0;
+            for (String searchTerm : searchTerms) {
+                Pattern pattern = Pattern.compile(".*" + Pattern.quote(searchTerm.replaceAll("\\*", ".*")) + ".*", Pattern.CASE_INSENSITIVE);
                 Matcher matcher = pattern.matcher(line);
-
-                if (matcher.find()) {
-                	termFound= true;
-                	matches++;
-                	break;
-                }          
+                while (matcher.find()) {
+                    matches++;
+                }
             }
-            
-            //Percent match calculation
-            double percent=(double)matches/searchTerms.size() * 100.0;
-            
-            //Search results
-            if (termFound) {
-                textarea.append(String.format("Term: " +searchTerms + " found in " + filename + " Percentage: (%.2f%%)" + "\n", percent ));
-//              System.out.println(matches);
-            } else {
-                textarea.append("Term: " +searchTerms + " not found in " + filename + ", term might be mispelt " + "\n");
-            }
+            words = line.split("\\s+").length;
+            totalMatches += matches;
+            totalWords += words;
+        }
+        
+        //Percent match calculation
+        double percent = (double) totalMatches / totalWords * 100.0;
+        
+        //Search results
+        if (totalMatches > 0) {
+            textarea.append(String.format("Terms: %s found in %s Percentage: (%.2f%%)\n", searchTerms, filename, percent ));
+        } else {
+            textarea.append(String.format("Terms: %s not found in %s. Terms might be misspelled.\n", searchTerms, filename));
         }
     }
 }
+
+
 
 //Menu within GUI
 public void actionPerformed(ActionEvent e)
